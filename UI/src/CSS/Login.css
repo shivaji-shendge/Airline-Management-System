@@ -1,0 +1,110 @@
+/* Full height with gradient background */
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* White box container */
+.auth-box {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  max-width: 1000px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Login and Register sections */
+.login-section,
+.register-section {
+  padding: 30px 20px;
+}
+
+.login-section {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+@media (min-width: 768px) {
+  .login-section {
+    border-right: 2px solid #dee2e6;
+    border-bottom: none;
+  }
+}
+
+/* Headings and labels */
+h2 {
+  color: #333;
+  font-weight: bold;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+/* Inputs */
+.form-control,
+.form-select {
+  border-radius: 5px;
+}
+
+.input-height {
+  height: 40px;
+}
+
+.button-height {
+  height: 40px;
+  padding: 0 16px;
+}
+
+/* Buttons */
+.btn {
+  font-size: 16px;
+  padding: 10px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #218838;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #dee2e6;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767.98px) {
+  .login-verify {
+    flex-direction: column;
+  }
+
+  .button-height {
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .auth-box {
+    padding: 0;
+  }
+}
