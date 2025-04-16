@@ -16,7 +16,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String updateUser(UserInfo user) {
+        return repo.updateUser(user);
+    }
+
+    @Override
     public UserInfo loginUser(String email) {
         return repo.loginUser(email);
+    }
+
+    @Override
+    public UserInfo loginAdmin(String email) {
+        return repo.loginAdmin(email);
     }
 }

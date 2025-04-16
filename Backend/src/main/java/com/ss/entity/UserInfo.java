@@ -6,15 +6,15 @@ public class UserInfo {
     private String email;
     private String contact;
     private String gender;
-    private String password;
+    private int age;
 
-    public UserInfo(int id, String name, String email, String contact, String gender, String password) {
+    public UserInfo(int id, String name, String email, String contact, String gender, int age) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.contact = contact;
         this.gender = gender;
-        this.password=password;
+        this.age=age;
     }
 
     public UserInfo() {
@@ -60,12 +60,13 @@ public class UserInfo {
     public void setGender(String gender) {
         this.gender = gender;
     }
-
-    public String getPassword() {
-        return password;
+    public int getAge() {
+        return age;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAge(int age) {
+        this.age = age;
     }
+
+
 }
