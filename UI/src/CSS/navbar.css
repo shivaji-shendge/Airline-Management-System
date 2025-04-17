@@ -1,6 +1,5 @@
 .nav-hover:hover {
   color: #FFD700 !important;
-  text-decoration: underline;
   transition: color 0.3s ease-in-out;
 
 }
@@ -8,3 +7,18 @@
 .header{
   background: linear-gradient(to bottom right, #1e3c72, #2a5298);
 }
+/* Remove blue background when a dropdown item is clicked */
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item:visited {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* Apply light background on hover for dropdown items */
+.dropdown-item:hover {
+  background-color: #f8f9fa !important; /* light gray */
+  color: #000 !important;
+}
+
+
