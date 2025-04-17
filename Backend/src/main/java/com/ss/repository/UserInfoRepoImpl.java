@@ -1,5 +1,6 @@
 package com.ss.repository;
 
+import com.ss.entity.AdminInfo;
 import com.ss.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,22 +49,21 @@ public class UserInfoRepoImpl implements  UserInfoRepo{
     }
 
     @Override
-    public UserInfo loginAdmin(String email) {
+    public AdminInfo loginAdmin(String email) {
         String query = "SELECT * FROM admininfo WHERE email = ?";
         try {
-            return template.queryForObject(query, new RowMapper<UserInfo>() {
+            return template.queryForObject(query, new RowMapper<AdminInfo>() {
                 @Override
-                public UserInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    UserInfo user = new UserInfo();
-                    user.setId(rs.getInt("id"));  // Corrected column name to 'id'
-                    user.setName(rs.getString("name"));
-                    user.setEmail(rs.getString("email"));
-                    user.setContact(rs.getString("contact"));
-                    user.setGender(rs.getString("gender"));
-                    user.setAge(rs.getInt("age"));
-                    return user;
+                public AdminInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    AdminInfo admin = new AdminInfo();
+                    admin.setName(rs.getString("name"));
+                    admin.setEmail(rs.getString("email"));
+                    admin.setContact(rs.getString("contact"));
+                    admin.setGender(rs.getString("gender"));
+                    admin.setAge(rs.getInt("age"));
+                    return admin;
                 }
-            }, email);
+        }, email);
         } catch (Exception e) {
             return null;  // Return null if no matching admin is found
         }

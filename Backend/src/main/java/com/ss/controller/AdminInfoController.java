@@ -1,5 +1,6 @@
 package com.ss.controller;
 
+import com.ss.entity.AdminInfo;
 import com.ss.entity.UserInfo;
 import com.ss.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,9 @@ public class AdminInfoController {
     private UserServiceImpl service;
 
     @PostMapping("/adminlogin")
-    public ResponseEntity<UserInfo> loginUser(@RequestParam String email) {
+    public ResponseEntity<AdminInfo> loginUser(@RequestParam String email) {
         // Try to find the admin by email
-        UserInfo admin = service.loginAdmin(email);
+        AdminInfo admin = service.loginAdmin(email);
 
         // If admin not found, return 404 with an error message
         if (admin == null) {
@@ -24,6 +25,7 @@ public class AdminInfoController {
         }
 
         // If admin is found, return admin data with a 200 status
+        System.out.println(admin);
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 }

@@ -25,6 +25,7 @@ public class UserInfoController {
 
         // If user is not found, return 404 with an error message
         if (user == null) {
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 

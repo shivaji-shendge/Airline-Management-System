@@ -1,5 +1,6 @@
 package com.ss.service;
 
+import com.ss.entity.AdminInfo;
 import com.ss.entity.UserInfo;
 import com.ss.repository.UserInfoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserInfo loginAdmin(String email) {
+    public AdminInfo loginAdmin(String email) {
         return repo.loginAdmin(email);
     }
 }
