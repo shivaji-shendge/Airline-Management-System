@@ -14,6 +14,7 @@ import ViewFlights from './Component/Admin/ViewFlights';
 import ViewBookings from './Component/Admin/VIewBooking';
 import { Contact } from './Component/contact';
 import MyAccount from './Component/User/MyAccount/MyAccount';
+import FlightBooking from './Component/FlightBooking';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
         <Route path="/user-login" element={<UserLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/my-account" element={<MyAccount />} />
+        <Route path="/flight-booking" element={<FlightBooking />} />
+
 
         {/* Admin Dashboard with nested routes */}
         <Route path="/admin" element={<AdminDashboard />}>

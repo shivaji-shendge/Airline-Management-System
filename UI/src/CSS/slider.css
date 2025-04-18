@@ -157,7 +157,7 @@
   }
   .slider-background {
     width: 100%;
-    background-color: rgb(58, 78, 138);
+    background-color: whitesmoke;
     display: flex;
     justify-content: center;
     padding: 30px 0; /* Optional: top and bottom padding */

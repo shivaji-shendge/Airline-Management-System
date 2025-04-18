@@ -7,7 +7,7 @@ import airoplaneCabin from '../../../assets/airoplaneCabin.jpg';
 import airoplaneInSky from '../../../assets/airoplaneInSky.webp';
 import checkinAirport from '../../../assets/checkinairport.webp';
 import inFlightDining from '../../../assets/inFlightDining.jpg';
-import sunsetView from '../../../assets/sunsetView.jpeg';
+import sunsetView from '../../../assets/sunsetView.avif';
 
 const ImageSlider = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

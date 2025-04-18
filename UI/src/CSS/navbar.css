@@ -1,24 +1,113 @@
+/* Navbar styling */
+.header {
+  background: linear-gradient(to right, #05203c, #18314b);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1.5rem;
+  border: none !important;
+}
+
+.navbar {
+  border: none !important;
+}
+
+/* Logo styling */
+.navbar-brand {
+  padding: 0;
+}
+
+.navbar-brand img {
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.02);
+}
+
+/* Navigation links styling */
+.nav-link {
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1rem !important;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-hover {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
 .nav-hover:hover {
-  color: #FFD700 !important;
-  transition: color 0.3s ease-in-out;
-
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
 }
 
-.header{
-  background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+/* Remove the underline effect completely */
+.nav-hover::after {
+  display: none;
 }
-/* Remove blue background when a dropdown item is clicked */
-.dropdown-item:active,
-.dropdown-item:focus,
+
+/* Remove any horizontal lines */
+.nav-item, .nav-link {
+  border: none !important;
+}
+
+.navbar::before,
+.navbar::after,
+.header::before,
+.header::after {
+  display: none !important;
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa !important;
+  color: #000 !important;
+  transform: translateX(3px);
+}
+
+.dropdown-item:active, 
+.dropdown-item:focus, 
 .dropdown-item:visited {
   background-color: transparent !important;
   color: inherit !important;
 }
 
-/* Apply light background on hover for dropdown items */
-.dropdown-item:hover {
-  background-color: #f8f9fa !important; /* light gray */
-  color: #000 !important;
+/* Mobile responsiveness */
+@media (max-width: 767.98px) {
+  .navbar-collapse {
+    background: linear-gradient(to bottom, #05203c, #18314b);
+    border-radius: 0 0 8px 8px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-hover::after {
+    display: none;
+  }
+  
+  .navbar-brand img {
+    max-height: 60px;
+  }
 }
-
-

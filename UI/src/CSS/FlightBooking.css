@@ -1,0 +1,173 @@
+.flight-booking-container {
+    background: linear-gradient(to right, #05203c, #18314b);
+    color: white;
+    padding: 2rem;
+    width: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  .booking-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .slogan {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  
+  .flight-options {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .option-button {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .option-button.active {
+    background-color: #0770e3;
+    border-color: #0770e3;
+  }
+  
+  .option-button:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .multi-city-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .multi-city-option i {
+    font-size: 0.8rem;
+  }
+  
+  .search-form {
+    width: 100%;
+  }
+  
+  .search-fields-container {
+    display: flex;
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .search-field {
+    flex: 1;
+    position: relative;
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  .search-field label {
+    display: block;
+    padding: 0.5rem 1rem 0;
+    color: #666;
+    font-size: 0.8rem;
+  }
+  
+  .search-field input {
+    width: 100%;
+    border: none;
+    padding: 0.5rem 1rem 1rem;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  .swap-button {
+    background-color: white;
+    border: none;
+    width: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .swap-button i {
+    background-color: #f2f2f2;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+  }
+  
+  .search-button {
+    background-color: #0770e3;
+    color: white;
+    border: none;
+    padding: 0 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .search-button:hover {
+    background-color: #0555a7;
+  }
+  
+  .search-options {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .checkbox-option input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .search-fields-container {
+      flex-direction: column;
+    }
+    
+    .search-field {
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .swap-button {
+      align-self: center;
+      margin: 0.5rem 0;
+    }
+    
+    .search-button {
+      padding: 1rem;
+    }
+    
+    .search-options {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
