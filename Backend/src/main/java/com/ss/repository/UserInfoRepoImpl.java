@@ -1,14 +1,15 @@
 package com.ss.repository;
 
-import com.ss.entity.AdminInfo;
 import com.ss.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class UserInfoRepoImpl implements  UserInfoRepo{
@@ -34,39 +35,38 @@ public class UserInfoRepoImpl implements  UserInfoRepo{
                 @Override
                 public UserInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
                     UserInfo user = new UserInfo();
-                    user.setId(rs.getInt("uid"));
+                    user.setUid(rs.getInt("uid"));
                     user.setName(rs.getString("name"));
                     user.setEmail(rs.getString("email"));
                     user.setContact(rs.getString("contact"));
                     user.setGender(rs.getString("gender"));
                     user.setAge(rs.getInt("age"));
+                    int val=rs.getInt("role");
+                    if(val==1){
+                        user.setRole("admin");
+                    }
+                    else {
+                        user.setRole("user");
+                    }
+                    System.out.println("User Found");
                     return user;
                 }
             }, email);
         } catch (Exception e) {
+            System.out.println("User Found");
             return null;
         }
     }
-
     @Override
-    public AdminInfo loginAdmin(String email) {
-        String query = "SELECT * FROM admininfo WHERE email = ?";
+    public List<UserInfo> getAllUser() {
         try {
-            return template.queryForObject(query, new RowMapper<AdminInfo>() {
-                @Override
-                public AdminInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    AdminInfo admin = new AdminInfo();
-                    admin.setName(rs.getString("name"));
-                    admin.setEmail(rs.getString("email"));
-                    admin.setContact(rs.getString("contact"));
-                    admin.setGender(rs.getString("gender"));
-                    admin.setAge(rs.getInt("age"));
-                    return admin;
-                }
-        }, email);
+            String query = "select * from userInfo where role=2";
+            System.out.println("Inside get all users repository");
+            return template.query(query, new BeanPropertyRowMapper<>(UserInfo.class));
         } catch (Exception e) {
-            return null;  // Return null if no matching admin is found
+            System.out.println(e);
         }
+        return null;
     }
 
 

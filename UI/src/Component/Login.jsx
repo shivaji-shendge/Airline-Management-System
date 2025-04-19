@@ -2,17 +2,15 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { registerUser } from "../Services/UserRegistrationService";
-import { loginUser } from "../Services/UserLoginService";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../CSS/Login.css";
 
-export const UserLogin = () => {
-  // State for login
-  const [user, setUserState] = useState({
-    email: "",
-  });
+// Use a consistent API base URL
+const API_BASE_URL = "http://localhost:8081";
 
-  // State for registration
+export const Login = () => {
+  const [user, setUserState] = useState({ email: "" });
   const [registrationData, setRegistrationData] = useState({
     name: "",
     email: "",
@@ -24,13 +22,13 @@ export const UserLogin = () => {
   const [loginMsg, setLoginMsg] = useState("");
   const [registerMsg, setRegisterMsg] = useState("");
   const [showOtpVerification, setShowOtpVerification] = useState(false);
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState(["", "", "", ""]); // 4-digit OTP
   const [activeTab, setActiveTab] = useState("login");
-  
+  const [verifiedUserData, setVerifiedUserData] = useState(null);
+
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Login input handler
   const uniHandler = (e) => {
     setUserState((prevData) => ({
       ...prevData,
@@ -38,7 +36,6 @@ export const UserLogin = () => {
     }));
   };
 
-  // Registration input handler
   const handleRegistrationInput = (e) => {
     setRegistrationData({
       ...registrationData,
@@ -46,35 +43,58 @@ export const UserLogin = () => {
     });
   };
 
-  const handleVerifyEmail = () => {
+  const handleVerifyEmail = async () => {
     if (!user.email) {
       setLoginMsg("Please enter your email address");
       return;
     }
-    
-    // Here you would call your API to send OTP to the email
-    // For now we'll just simulate it
-    setLoginMsg("OTP has been sent to your email!");
-    setShowOtpVerification(true);
+
+    try {
+      setLoginMsg("Sending verification request...");
+      const response = await axios.post(`${API_BASE_URL}/verifyEmail`, { email: user.email });
+      
+      // Extract complete user data from response
+      const { message, userData } = response.data;
+      
+      console.log("Email verification successful:", message);
+      
+      // Store complete user data for later use after OTP verification
+      if (userData) {
+        setVerifiedUserData(userData);
+      }
+      
+      setLoginMsg("OTP has been sent to your email!");
+      setShowOtpVerification(true);
+
+      // Focus on first OTP input
+      setTimeout(() => {
+        const firstInput = document.getElementById("otp-input-0");
+        if (firstInput) firstInput.focus();
+      }, 100);
+    } catch (error) {
+      console.error("Email verification error:", error);
+      const errorMessage = error.response?.data?.message || "Failed to verify email. Please ensure it is registered.";
+      setLoginMsg(errorMessage);
+    }
   };
 
   const handleOtpChange = (index, value) => {
-    // Only allow numbers
+    // Only allow digits
     if (value && !/^\d*$/.test(value)) return;
-    
+
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    
-    // Auto-focus to next input
-    if (value && index < 5) {
+
+    // Move to next input if value is entered
+    if (value && index < 3) {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       if (nextInput) nextInput.focus();
     }
   };
 
   const handleOtpKeyDown = (index, e) => {
-    // Handle backspace to move to previous input
+    // Move to previous input on backspace if current input is empty
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-input-${index - 1}`);
       if (prevInput) prevInput.focus();
@@ -83,62 +103,76 @@ export const UserLogin = () => {
 
   const handleResendOtp = (e) => {
     e.preventDefault();
-    setLoginMsg("A new OTP has been sent to your email!");
-    // Reset OTP fields
-    setOtp(["", "", "", "", "", ""]);
-    // Focus on first input
-    setTimeout(() => {
-      const firstInput = document.getElementById("otp-input-0");
-      if (firstInput) firstInput.focus();
-    }, 100);
+    handleVerifyEmail();
   };
 
   const handleRegisterUser = (e) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!registrationData.name || !registrationData.email || !registrationData.contact) {
+      setRegisterMsg("Please fill all required fields");
+      return;
+    }
+    
     registerUser(registrationData)
       .then((res) => {
         setRegisterMsg(res.data);
         setLoginMsg("");
         window.alert("Registration successful!");
-        // Switch to login tab after successful registration
         setActiveTab("login");
       })
       .catch((error) => {
         console.error("Registration error:", error);
         setRegisterMsg("Registration failed. Please try again.");
         setLoginMsg("");
-        window.alert("Registration failed. Please try again.");
       });
   };
 
-  // Login handler
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     if (showOtpVerification) {
       const fullOtp = otp.join("");
-      if (fullOtp.length !== 6) {
-        setLoginMsg("Please enter the complete 6-digit OTP");
+      if (fullOtp.length !== 4) {
+        setLoginMsg("Please enter the complete 4-digit OTP");
         return;
       }
-      
-      // Here you would validate the OTP through your API
-      // For now we'll simulate it by proceeding with login
-    }
 
-    loginUser(user.email)
-      .then((res) => {
-        setUser(res.data); // Store user data in context
-        const successMsg = "Login successful! Welcome, " + res.data.name;
-        setLoginMsg(successMsg);
-        window.alert(successMsg); // Alert on successful login
-        navigate("/"); // Redirect to home page
-      })
-      .catch((error) => {
-        const failMsg = "Login failed. Please try again.";
-        setLoginMsg(failMsg);
-        window.alert(failMsg); // Alert on failed login
-      });
+      try {
+        setLoginMsg("Verifying OTP...");
+        
+        // Only verify the OTP, we already have the user data
+        const response = await axios.post(`${API_BASE_URL}/verifyOtp`, {
+          email: user.email,
+          otp: fullOtp
+        });
+
+        console.log("OTP verified successfully:", response.data.message);
+        
+        // Use the user data we already stored during email verification
+        if (verifiedUserData) {
+          // Now that OTP is verified, we can set the user in auth context
+          setUser(verifiedUserData);
+          
+          const successMsg = "Login successful! Welcome, " + verifiedUserData.name;
+          setLoginMsg(successMsg);
+          window.alert(successMsg);
+          
+          // Navigate to home page after successful login, regardless of role
+          // Admin will see the Admin Services in navbar
+          navigate("/");
+        } else {
+          setLoginMsg("Error: User data not found. Please try again.");
+        }
+      } catch (error) {
+        console.error("OTP verification error:", error);
+        const errorMessage = error.response?.data?.message || "Invalid OTP. Please try again.";
+        setLoginMsg(errorMessage);
+      }
+    } else {
+      setLoginMsg("Please verify your email first.");
+    }
   };
 
   return (
@@ -146,24 +180,24 @@ export const UserLogin = () => {
       <div className="auth-box">
         <div className="login-card">
           <div className="tabs">
-            <button 
+            <button
               className={`tab-btn ${activeTab === 'login' ? 'active' : ''}`}
               onClick={() => setActiveTab('login')}
             >
               Login
             </button>
-            <button 
+            <button
               className={`tab-btn ${activeTab === 'register' ? 'active' : ''}`}
               onClick={() => setActiveTab('register')}
             >
               Register
             </button>
           </div>
-          
+
           {activeTab === 'login' ? (
             <div className="tab-content">
-              <h2>User Login</h2>
-              
+              <h2>Login</h2>
+
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <div className="input-group">
@@ -175,8 +209,8 @@ export const UserLogin = () => {
                     onChange={uniHandler}
                     value={user.email}
                   />
-                  <button 
-                    className="verify-btn" 
+                  <button
+                    className="verify-btn"
                     type="button"
                     onClick={handleVerifyEmail}
                     disabled={showOtpVerification}
@@ -186,7 +220,7 @@ export const UserLogin = () => {
                   </button>
                 </div>
               </div>
-              
+
               {showOtpVerification && (
                 <div className="otp-section">
                   <label>Enter OTP</label>
@@ -213,21 +247,21 @@ export const UserLogin = () => {
                   </div>
                 </div>
               )}
-              
+
               {loginMsg && (
                 <div className="message-box" role="alert">
                   {loginMsg}
                 </div>
               )}
-              
-              <button 
-                className="login-btn" 
+
+              <button
+                className="login-btn"
                 onClick={handleLogin}
                 type="submit"
               >
                 Login
               </button>
-              
+
               <div className="switch-tab-prompt">
                 <p>
                   Don't have an account? <a href="#" onClick={() => setActiveTab('register')}>Register now</a>
@@ -236,8 +270,8 @@ export const UserLogin = () => {
             </div>
           ) : (
             <div className="tab-content">
-              <h2>User Registration</h2>
-              
+              <h2>Registration</h2>
+
               <div className="form-group">
                 <label htmlFor="username">Name</label>
                 <input
@@ -250,7 +284,7 @@ export const UserLogin = () => {
                   className="full-width-input"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="emailRegister">Email</label>
                 <input
@@ -263,7 +297,7 @@ export const UserLogin = () => {
                   className="full-width-input"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="contactRegister">Mobile Number</label>
                 <input
@@ -276,7 +310,7 @@ export const UserLogin = () => {
                   className="full-width-input"
                 />
               </div>
-              
+
               <div className="form-row">
                 <div className="form-group half-width">
                   <label htmlFor="gender">Gender</label>
@@ -293,7 +327,7 @@ export const UserLogin = () => {
                     <option value="Other">Other</option>
                   </select>
                 </div>
-                
+
                 <div className="form-group half-width">
                   <label htmlFor="age">Age</label>
                   <input
@@ -309,21 +343,21 @@ export const UserLogin = () => {
                   />
                 </div>
               </div>
-              
+
               {registerMsg && (
                 <div className="message-box" role="alert">
                   {registerMsg}
                 </div>
               )}
-              
-              <button 
-                className="register-btn" 
+
+              <button
+                className="register-btn"
                 onClick={handleRegisterUser}
                 type="submit"
               >
                 Register
               </button>
-              
+
               <div className="switch-tab-prompt">
                 <p>
                   Already have an account? <a href="#" onClick={() => setActiveTab('login')}>Login now</a>
@@ -335,4 +369,4 @@ export const UserLogin = () => {
       </div>
     </div>
   );
-}
+};

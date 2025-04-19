@@ -1,32 +1,36 @@
 package com.ss.entity;
 
 public class UserInfo {
-    private int id;
+    private int uid;
     private String name;
     private String email;
     private String contact;
     private String gender;
     private int age;
+    private String role;
 
-    public UserInfo(int id, String name, String email, String contact, String gender, int age) {
-        this.id = id;
+
+
+    public UserInfo(int uid, String name, String email, String contact, String gender, int age,String role) {
+        this.uid = uid;
         this.name = name;
         this.email = email;
         this.contact = contact;
         this.gender = gender;
         this.age=age;
+        this.role=role;
     }
 
     public UserInfo() {
         super();
     }
 
-    public int getId() {
-        return id;
+    public int getUid() {
+        return uid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -66,6 +70,13 @@ public class UserInfo {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 
